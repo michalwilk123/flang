@@ -1,0 +1,37 @@
+{% defmc ^names ["import" "javascript import"] ^refname import-statement
+{% defc ^names ["multiple" "short"]
+import {{% defmp names ,  %}} from {% defv source %};
+%}
+{% defc ^names ["detail" "short"] 
+import {% defp name %} from {% defp source %}{% defrpe as as {% defv as %} %};
+%}
+{% defc ^names ["all"] 
+import * from {% defp source %}{% defrpe as as {% defv as %} %};
+%}
+%}
+
+
+{% defc react-component 
+{% defr create-component-file
+  def _(c, **props):
+    props.filename = "./" + props.component_name + ".jsx"
+%}
+import React, { useState } from 'react';
+
+const {% defv component-name %} = () => {
+  // Define state variable for button text
+  const [buttonText, setButtonText] = useState('Click me');
+
+  // Function to handle button click
+  const handleClick = () => {
+    // Update button text when clicked
+    setButtonText('Clicked!');
+  };
+
+  return (
+    <button onClick={handleClick}>{buttonText}</button>
+  );
+};
+
+export default ButtonComponent;
+%}

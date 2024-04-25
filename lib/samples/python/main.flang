@@ -1,0 +1,34 @@
+{% defc ^name python-file 
+{% defpc {% defp ^name filepath {% format "{filepath}\.py" %} %} %}
+{% defr ^name match-filename ^vars ["filename" "function.name"] 
+    def _(filename="", func_name=""):
+        if filename:
+            func_name = util.to_camel_case(func_name)
+        elif func_name:
+            filename = util.to_snake_case(filename)
+        return filename, func_name
+%}
+{% useem ^path ".imports.flang" connect-imports %}
+{% defoc import 
+    {% defm ^name from from {% defp ^name module vname %} {% defrpe as as {% defv ^name as vname %} %} %}
+    {% defoc module 
+        import {% defp ^name object vname %} {% usem from %}
+    %}
+    {% defc ^name short 
+        import * {% usem from %}
+    %}
+    {% defc ^name relative 
+        import {% defp ^name object {% format ".+{vname}" %} %} {% uselm from %}
+    %}
+%}
+{% defoc ^name function 
+    def {% defp ^name name vname %}({% defv arguments {% format "{vname}(, {vname})*" %} %}):
+        {% defp ^name body ^options ["multiline"] code %}
+%}
+%}
+
+from lalal import AA
+import aa
+import aa as kk
+import * from aa as nnn
+from nnn import aa, bb, cc

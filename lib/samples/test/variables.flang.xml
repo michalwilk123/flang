@@ -1,0 +1,43 @@
+<components>
+    <component name="python">
+        <component name="assignment" type="definition" join="|">
+            <component name="ternary">
+                <def-pred name="if-value" pattern="{vname}|{number}"/> if <def-pred name="condition"/> else <def-pred name="else-value" pattern="{vname}|{number}"/>
+            </component>
+            <component name="value">
+                <def-pred name="value" pattern="{vname}|{number}"/>
+            </component>
+        </component>
+        <component name="variable">
+            <def-pred name="name"/> = <use name=".assignment"/>
+        </component>
+    </component>
+    <component name="javascript">
+        <component name="assignment" type="definition" join="|">
+            <component name="ternary">
+                <def-pred name="if-value" pattern="{vname}|{number}"/> ? <def-pred name="condition"/> : <def-pred name="else-value" pattern="{vname}|{number}"/>
+            </component>
+            <component name="value">
+                <def-pred name="value" pattern="{vname}|{number}"/>
+            </component>
+        </component>
+        <component name="variable">
+            <def-pred name="type" pattern="var|const|let" /><def-pred name="name"/> = <use name=".assignment"/>;
+        </component>
+        <component name="special-assignment" overrides=".variable">
+            <def-rule exists="variable.value.number" vars="name;value" name="">
+                def _(name, value, reverse):
+                    """
+                    If number is even, the variable name should end with "_even"
+                    """
+                    if not reverse:
+                        if int(value) % 2 == 0:
+                            name += "_even"
+                    else:
+                        if int(value) % 2 == 0:
+                            name = name.removesuffix("_even")
+                    return name, value
+            </def-rule>
+        </component>
+    </component>
+</components>

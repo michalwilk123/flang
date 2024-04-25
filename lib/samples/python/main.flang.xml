@@ -1,0 +1,23 @@
+<component name="python-code">
+    <component name="import-statement" prod-rule="*">
+        <rule vars="g.filename;.function.name">
+            def _(filename="", func_name=""):
+                if filename:
+                    func_name = util.to_camel_case(func_name)
+                elif func_name:
+                    filename = util.to_snake_case(filename)
+                return filename, func_name
+        </rule>
+        <component name="import" type="definition">
+import <predicate name="object" pattern="({vname}(, {vname})*)|\*"/>
+        </component>
+        <component prod-rule="?">from <predicate name="module" pattern="\.*{vname}(\.{vname})*"/></component> <use name=".import"/>
+    </component>
+    <component type="definition" name="body">
+        .*
+    </component>
+    <component name="function" prod-rule="*">
+def <predicate name="name" pattern="{vname}"/>(<predicate name="arguments" pattern="{vname}?(, {vname})*"/>):
+    <use ref=".body"/>
+    </component>
+</component>
